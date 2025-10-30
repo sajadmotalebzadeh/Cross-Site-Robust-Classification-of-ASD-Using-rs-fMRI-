@@ -45,20 +45,6 @@ ASD/
 └─ (outputs) paper_figs_*.png/svg       # figures auto-generated
 
 
-⸻
-
-Environment
-
-Conda (recommended)
-
-conda create -n asd python=3.12 -y
-conda activate asd
-pip install numpy pandas matplotlib scikit-learn xgboost torch category-encoders
-
-Pip (alt.)
-
-pip install -r env/requirements.txt
-
 
 ⸻
 
@@ -107,23 +93,6 @@ Reproducibility & leakage control (what we freeze)
 	•	One-Hot stability: global category set fixed → identical feature width across folds.
 	•	Seeds: fixed for NumPy, PyTorch, XGBoost (see script).
 	•	Artifacts to share: outer fold files, encoded phenotypes, PCA connectome features.
-
-⸻
-
-Troubleshooting
-	•	Mac/py3.12/sklearn 1.6 “CalibratedClassifierCV” errors
-This repo uses manual calibration (isotonic/Platt) — there should be no CalibratedClassifierCV calls.
-If you edited locally, ensure:
-
-grep -n "CalibratedClassifierCV\|xgb_cal_full" asd_pipline_abide_connectome.py
-
-returns nothing. Remove __pycache__/ and rerun.
-
-	•	“Found input variables with inconsistent numbers of samples”
-After merging connectomes, only subjects with both phenotypes and ROI time series remain. The script re-aligns labels after merge. Ensure ROI filenames expose SUB_ID (adjust the parser if needed).
-	•	Importance vstack dimension mismatch
-Fixed by global OHE categories; we also pad as a safety guard.
-
 ⸻
 
 CC200 & ABIDE references (cite in your paper)
@@ -131,26 +100,3 @@ CC200 & ABIDE references (cite in your paper)
 	•	Di Martino A, Yan CG, Li Q, et al. The autism brain imaging data exchange… Mol Psychiatry. 2014;19:659–667. (ABIDE-I)
 
 ⸻
-
-License
-	•	Code: MIT (or Apache-2.0) — pick one and include LICENSE.
-	•	Data derivatives: share under a permissive data license (e.g., CC BY 4.0) subject to ABIDE terms. Raw imaging and raw ROI time series are not redistributed.
-
-⸻
-
-Citation (template)
-
-If you use this code, please cite your paper and the resources above. For now:
-
-@misc{your_repo_yyyy,
-  title  = {Robust Autism Classification on ABIDE-I: Dual-Attention NN + Calibrated XGBoost},
-  author = {Your Name},
-  year   = {2025},
-  url    = {<repo URL>},
-  note   = {Versioned snapshot: <DOI or tag>}
-}
-
-
-⸻
-
-Questions or issues? Open an issue with your command line, OS, Python/package versions, and the console log snippet.
